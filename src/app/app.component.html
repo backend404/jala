@@ -1,17 +1,16 @@
-<!-- <app-nav-bar></app-nav-bar>
-<router-outlet></router-outlet> -->
 <app-nav-bar></app-nav-bar>
-<div class="container-fluid ps-0" dir="rtl">
-    <section class="row">
 
-      <!-- <app-home class="col-10"></app-home> -->
-      <!-- <app-product-list class="col-10"></app-product-list> -->
-      <!-- <app-order-master class="col-10"></app-order-master> -->
-      <div class="col-10">
-        <router-outlet ></router-outlet>
-      </div>
-  
-    </section>
+<div class="container-fluid ps-0" dir="rtl">
+  <div class="row g-0"> <!-- إزالة الهوامش بين الأعمدة -->
+
+    <!-- يمكنك مستقبلاً وضع sidebar هنا إن أردت -->
+    <!-- <div class="col-2 bg-light">القائمة الجانبية</div> -->
+
+    <div class="col-12 col-md-10 mx-auto"> <!-- تأخذ 100% على الموبايل و90% على الشاشات الكبيرة -->
+      <router-outlet></router-outlet>
+    </div>
+
   </div>
-  <app-footer></app-footer>
-  
+</div>
+
+<app-footer></app-footer>

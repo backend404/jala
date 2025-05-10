@@ -1,7 +1,13 @@
 <div class="container mt-4">
     <!-- عنوان المنتج -->
-    <h2 class="mb-3">{{ product.name }}</h2>
-  
+    <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="mb-0">{{ product.name }}</h2>
+    
+    <button class="btn btn-outline-secondary bg-warning" (click)="goBack()">
+      العودة ←
+    </button>
+  </div>
+
     <div class="row">
       <!-- الصور -->
       <div class="col-md-6">
@@ -64,8 +70,8 @@
     </div>
   
     <!-- فيديو يوتيوب -->
-    <div class="mt-4">
-      <h4>الفيديو التعريفي:</h4>
+    <div *ngIf="product.youtubeLink  != null" class="mt-4">
+      <h4 >الفيديو التعريفي:</h4>
       <div class="ratio ratio-16x9">
         <iframe 
           [src]="getSafeYoutubeLink(product.youtubeLink)" 

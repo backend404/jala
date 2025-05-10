@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { LoginService } from '../../Services/login.service';
 import { FormsModule } from '@angular/forms';
 import { ProductsService } from '../../Services/product.service';
@@ -13,7 +13,7 @@ import { ToastrService, ToastrModule } from 'ngx-toastr';
 @Component({
   selector: 'app-master',
   standalone: true,
-  imports: [FormsModule, CommonModule, ToastrModule],
+  imports: [FormsModule, CommonModule, ToastrModule ,RouterLink],
   templateUrl: './master.component.html',
   styleUrl: './master.component.css',
 })
@@ -70,6 +70,7 @@ export class MasterComponent {
       .subscribe({
         next: (res) => {
           this.productslist = res;
+          console.log(this.productslist);
         },
         error: (err) => console.error('Failed to load products', err),
       });

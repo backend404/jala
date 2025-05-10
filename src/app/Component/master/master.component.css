@@ -16,4 +16,37 @@ background-color:rgb(221, 243, 234) ;
     overflow: hidden;
     text-overflow: ellipsis;
   }
+  /* لكروت المنتجات */
+.card {
+  transition: transform 0.3s;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+/* للصور داخل الكارت */
+
+
+/* للون الخلفية */
+body {
+  background-color: #f8f9fa;
+}
+
+/* تعديلات للهواتف */
+@media (max-width: 576px) {
+  .card {
+    margin-left: 0;
+    margin-right: 0;
+    width: 100%;
+  }
   
+  .container {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}

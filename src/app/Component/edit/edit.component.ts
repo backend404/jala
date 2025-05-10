@@ -1,39 +1,44 @@
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Iproduct } from '../../Moduels/iproduct';
-import { CommonModule, CurrencyPipe } from '@angular/common';
+import { CommonModule, CurrencyPipe, Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { ProductsService } from '../../Services/product.service';
 
 @Component({
   selector: 'app-edit',
   standalone: true,
-  imports: [CurrencyPipe ,CommonModule],
+  imports: [CurrencyPipe, CommonModule],
   templateUrl: './edit.component.html',
-  styleUrl: './edit.component.css'
+  styleUrl: './edit.component.css',
 })
 export class EditComponent implements OnInit {
-  product !: Iproduct ;
+  product!: Iproduct;
   expandedProductId: number | null = null;
 
-  constructor(private sanitizer: DomSanitizer,private route: ActivatedRoute,
-    private productService: ProductsService) {}
+  constructor(
+    private sanitizer: DomSanitizer,
+    private route: ActivatedRoute,
+    private productService: ProductsService,
+    private location: Location
+  ) {}
 
-    
-    ngOnInit(): void {
-      // استخراج المعامل id من الرابط
-      const prdID = Number(this.route.snapshot.paramMap.get('id'));
-      
-      // جلب بيانات المنتج حسب المعرّف
-      this.productService.getProductByID(prdID).subscribe({
-        next: (data) => this.product = data,
-        error: (err) => console.error('Error loading product', err)
-      });
-    }
-  
+  ngOnInit(): void {
+    // استخراج المعامل id من الرابط
+    const prdID = Number(this.route.snapshot.paramMap.get('id'));
+    //const prdID = +(this.route.snapshot.paramMap.get('id') || 0) ;
+    console.log(prdID);
+    // جلب بيانات المنتج حسب المعرّف
+    this.productService.getProductByID(prdID).subscribe({
+      next: (data) => (this.product = data),
+      error: (err) => console.error('Error loading product', err),
+    });
+  }
 
   getSafeYoutubeLink(link: string): SafeResourceUrl {
-    const embedUrl = link.includes('embed') ? link : `https://www.youtube.com/embed/${this.extractYoutubeId(link)}`;
+    const embedUrl = link.includes('embed')
+      ? link
+      : `https://www.youtube.com/embed/${this.extractYoutubeId(link)}`;
     return this.sanitizer.bypassSecurityTrustResourceUrl(embedUrl);
   }
 
@@ -49,5 +54,7 @@ export class EditComponent implements OnInit {
   toggleDescription(id: number) {
     this.expandedProductId = this.expandedProductId === id ? null : id;
   }
-
+  goBack(): void {
+    this.location.back();
+  }
 }
