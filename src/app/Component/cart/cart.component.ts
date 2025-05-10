@@ -6,6 +6,7 @@ import { OrderService } from '../../Services/order.service';
 import { CartService } from '../../Services/cart.service';
 import { Router } from '@angular/router';
 import { ToastrService, ToastrModule } from 'ngx-toastr';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-cart',
@@ -25,7 +26,8 @@ export class CartComponent {
     private orderService: OrderService,
     private ser: CartService,
     private router: Router,
-      private toastr: ToastrService
+      private toastr: ToastrService,
+      private location: Location
 
   ) {}
   cartProducts: any[] = [];
@@ -47,7 +49,7 @@ export class CartComponent {
   getCartProducts() {
     if ('cartProducts' in localStorage) {
       this.cartProducts = JSON.parse(localStorage.getItem('cartProducts')!);
-      console.log(this.cartProducts);
+     // console.log(this.cartProducts);
     }
     this.getCartTotal();
   }
@@ -71,6 +73,7 @@ export class CartComponent {
     this.cartProducts.splice(index, 1);
     this.getCartTotal();
     localStorage.setItem('cartProducts', JSON.stringify(this.cartProducts));
+   this.ser.updateCartCount();
   }
 
   clearCart() {
@@ -79,7 +82,10 @@ export class CartComponent {
     localStorage.setItem('cartProducts', JSON.stringify(this.cartProducts));
   }
   clearALLCart() {
+   this.cartProducts = JSON.parse(localStorage.getItem('cartProducts')!);
+    this.getCartTotal();
     localStorage.removeItem('cartProducts');
+     this.ser.updateCartCount();
   }
   getCartTotal() {
     this.total = 0;
@@ -132,4 +138,7 @@ export class CartComponent {
       }
     );
   }
+  goBack(): void {
+  this.location.back();
+}
 }

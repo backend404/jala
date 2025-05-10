@@ -8,11 +8,12 @@ import { CartService } from '../../Services/cart.service';
 import { CommonModule } from '@angular/common';
 import { Iproduct } from '../../Moduels/iproduct';
 import { Icatagory } from '../../Moduels/icatagory';
+import { ToastrService, ToastrModule } from 'ngx-toastr';
 
 @Component({
   selector: 'app-master',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, ToastrModule],
   templateUrl: './master.component.html',
   styleUrl: './master.component.css',
 })
@@ -40,12 +41,12 @@ export class MasterComponent {
     private router: Router,
     private loginservice: LoginService,
     private prdservices: ProductsService,
-    private cartService: CartService
-  ) {
-  }
+    private cartService: CartService,
+    private toastr: ToastrService
+  ) {}
 
   ngOnInit(): void {
-   this.loadCategories();
+    this.loadCategories();
     this.filterProducts();
   }
   onPrevious() {
@@ -61,7 +62,7 @@ export class MasterComponent {
 
   filterProducts(): void {
     this.filterObj.catagorgsId = this.chooseCatID;
-    
+
     this.httpclient
       .get<Iproduct[]>(
         `https://jala44.bsite.net/api/Product/Num?catagorgsId=${this.filterObj.catagorgsId}&suppliersId=${this.filterObj.suppliersId}&pg=${this.filterObj.pg}&item=${this.filterObj.item}`
@@ -70,22 +71,22 @@ export class MasterComponent {
         next: (res) => {
           this.productslist = res;
         },
-        error: (err) => console.error('Failed to load products', err)
+        error: (err) => console.error('Failed to load products', err),
       });
   }
-loadCategories(): void {
+  loadCategories(): void {
     this.prdservices.getallcat().subscribe({
       next: (categories) => {
         this.catList = categories;
         // إضافة خيار "All Categories" إذا لم يكن موجوداً
-        if (!this.catList.some(c => c.cat_Id === 0)) {
+        if (!this.catList.some((c) => c.cat_Id === 0)) {
           this.catList.unshift({ cat_Id: 0, namecat: 'All Categories' });
         }
       },
-      error: (err) => console.error('Failed to load categories', err)
+      error: (err) => console.error('Failed to load categories', err),
     });
   }
- getSelCat(): void {
+  getSelCat(): void {
     this.filterObj.pg = 1; // إعادة تعيين الصفحة إلى 1
     this.filterProducts();
   }
@@ -108,7 +109,9 @@ loadCategories(): void {
       );
 
       if (exist) {
-        alert('Product with this color is already in your cart');
+        //alert('هذا المنتج مضاف بالفعل في سلة المشتريات ');
+                this.toastr.success(' المنتج مضاف بالفعل في سلة المشتريات ');
+
       } else {
         this.cartProducts.push(productWithColor);
         this.cartService.addToCart(productWithColor);
