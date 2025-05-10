@@ -7,6 +7,7 @@ import { CartComponent } from './Component/cart/cart.component';
 import { AddingproductComponent } from './Component/addingproduct/addingproduct.component';
 
 export const routes: Routes = [
+    {path: '', redirectTo: '/master', pathMatch: 'full'}
     {path: 'add', component:AddproductComponent},
     {path: 'master', component:MasterComponent},
     {path: 'catagory', component:CatagorylistComponent},
