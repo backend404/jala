@@ -1,0 +1,123 @@
+<div class="container">
+  <!-- Category Filter -->
+  <div class="row d-flex justify-content-center align-items-center mb-4 mt-3">
+    <div class="col-12 col-md-4">
+      <select class="form-select" [(ngModel)]="chooseCatID" (change)="getSelCat()">
+        <option *ngFor="let cat of catList" [value]="cat.cat_Id">{{ cat.namecat }}</option>
+      </select>
+    </div>
+  </div>
+
+
+  <!-- Row for Item Name Search -->
+  <!-- <div class="row d-flex justify-content-center align-items-center mb-3">
+    <div class="col-12 col-md-6">
+      <div class="form-group">
+        <input type="text" class="form-control" [(ngModel)]="filterObj.item" placeholder="Search By Name">
+      </div>
+    </div>
+  </div> -->
+
+  <!-- Row for Search Button -->
+  <!-- <div class="row d-flex justify-content-center align-items-center mb-1">
+    <div class="col-12 col-md-3 text-center">
+      <button class="btn btn-sm btn-success w-100" style="margin-right: 25px; background:#C779D0;"
+        (click)="filetrCandidates()  ">Search</button>
+    </div>
+  </div>
+</div> -->
+
+
+
+  <div class="w-100 m-5 d-flex flex-wrap ">
+    @for ( Item of productslist ;track Item.product_Id)
+    {
+
+    <div class="card col-md-5 col-lg-4 mx-3 mb-4" style="width: 16rem;">
+
+      @if (Item.images[0] == null)
+      {
+      <img style="width:100%;height:180px" src="/images/NoImage.png" class="card-img-top" alt="...">
+
+      }
+      @if (Item.images[0]!=null)
+
+      {
+
+      <a href="/product/Details/@Item.Product_Id">
+        <img style="width:100%;height:180px" src="https://localhost:44380/Images/{{Item.images[0]}}"
+          class="card-img-top" alt="...">
+      </a>
+      }
+      <div class="card-body">
+        <h5 class="card-title">{{Item.name}}</h5>
+        <!-- <p class="card-text">
+                    <b>الوصف: </b>{{Item.description}} <br />
+                    <b>السعر : </b>{{Item.price}}
+                </p>
+                 -->
+        <p class="card-text">
+          <b>الوصف: </b>{{Item.content}} <br />
+
+        </p>
+
+
+
+
+        <p class="card-text">
+
+          <b>السعر : </b>{{Item.price}}
+        </p>
+
+        <div class="d-flex align-items-center mt-2" style="gap: 0.5rem;">
+          <b class="me-2">اللون:</b>
+          <div class="color-options d-flex">
+            <div *ngFor="let color of Item.colors" class="color-circle me-2" [ngStyle]="{
+                           'background-color': color,
+                           'border': selectedColor === color ? '2px solid black' : '1px solid #ccc'
+                         }" (click)="selectColor(color)" [title]="color">
+            </div>
+          </div>
+        </div>
+
+
+        <p class="card-text" [ngClass]="{'description': expandedProductId !== Item.product_Id}"
+          (click)="toggleDescription(Item.product_Id)" style="cursor: pointer;"
+          [title]="expandedProductId === Item.product_Id ? '' : Item.description">
+          <b> </b>{{Item.description}}
+        </p>
+
+        <div class="text-center">
+          <button type="button" class="btn btn-sm btn-success" style=" background:deeppink; color: width;"
+            (click)="addtocart(Item)">أضف إلى السلة</button>
+        </div>
+
+        <!-- <button type="button" class="btn btn-primary" (click)="addtocart(Item.product_Id)">Add to cart</button> -->
+
+      </div>
+
+
+
+
+
+
+    </div>
+    }
+
+    <div class="container align-center">
+      <div class="row">
+
+        <div class="col-3">
+          @if(productslist.length>=8)
+          {<a class="btn " style="background: #C779D0;color: white;" (click)="onNext()">next</a>}
+        </div>
+        <div class="col-3">
+          <a class="btn" style="background: #C779D0;color: white;">{{filterObj.pg}}</a>
+        </div>
+        <div class="col-3">
+          @if(filterObj.pg>1)
+          {<a class="btn " style="background: #C779D0; color: white;" (click)="onPrevious()">prev</a>}
+        </div>
+
+      </div>
+    </div>
